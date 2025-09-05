@@ -7,25 +7,44 @@ from models.usuario import criar_tabela
 app = Flask(__name__)
 CORS(app)
 
-# Swagger básico
+# Inicializa tabela SQLite
+criar_tabela()
+
+# Template mínimo do Swagger
 swagger_template = {
     "swagger": "2.0",
     "info": {
         "title": "API de Usuários",
         "description": "API para gerenciamento de usuários",
         "version": "1.0.0"
-    },
-    "basePath": "/",
-    "schemes": ["http"]
+    }
 }
 
-Swagger(app, template=swagger_template)
+# Configuração do Swagger
+swagger_config = {
+    "headers": [],
+    "specs": [
+        {
+            "endpoint": "apispec_1",
+            "route": "/apispec_1.json",   # JSON acessível
+            "rule_filter": lambda rule: True,
+            "model_filter": lambda tag: True,
+        }
+    ],
+    "static_url_path": "/swagger",
+    "swagger_ui": True,
+    "specs_route": "/swagger/"   # <<< precisa da barra final
+}
 
-# Inicialização da tabela e rotas
-criar_tabela()
+swagger = Swagger(app, template=swagger_template, config=swagger_config)
+
+# Registra rotas
 app.register_blueprint(usuario_rotas)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
+
+
+
 
 
