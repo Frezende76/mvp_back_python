@@ -95,3 +95,4 @@ def buscar_todos_usuarios(nome='', endereco='', email='', telefone=''):
             {'id': u[0], 'nome': u[1], 'endereco': u[2], 'email': u[3], 'telefone': u[4]}
             for u in usuarios
         ]
+

@@ -3,13 +3,14 @@ from models.usuario import cadastrar_usuario, editar_usuario, buscar_usuario, de
 
 usuario_rotas = Blueprint('usuarios', __name__)
 
-# Listar todos usuários / criar novo usuário
+# GET /usuarios → lista todos os usuários (retorna [] se nenhum)
+# POST /usuarios → cria novo usuário
 @usuario_rotas.route('/usuarios', methods=['GET', 'POST'])
 def usuarios():
     if request.method == 'GET':
         filtros = {k: v for k, v in request.args.items()}
         usuarios = buscar_todos_usuarios(**filtros)
-        return jsonify(usuarios), 200 if usuarios else 404
+        return jsonify(usuarios), 200
 
     if request.method == 'POST':
         dados = request.get_json()
@@ -22,7 +23,9 @@ def usuarios():
 
         return jsonify(novo_usuario), 201
 
-# Consultar, editar e deletar por ID
+# GET /usuarios/:id → consulta por ID
+# PUT /usuarios/:id → edita usuário
+# DELETE /usuarios/:id → exclui usuário
 @usuario_rotas.route('/usuarios/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def usuario_id(id):
     usuario = buscar_usuario(id)
@@ -42,4 +45,3 @@ def usuario_id(id):
     if request.method == 'DELETE':
         deletar_usuario(id)
         return jsonify({'message': 'Usuário deletado com sucesso!'}), 200
-

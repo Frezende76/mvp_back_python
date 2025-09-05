@@ -28,3 +28,4 @@ app.register_blueprint(usuario_rotas)
 if __name__ == '__main__':
     app.run(debug=True)
 
+
