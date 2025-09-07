@@ -19,51 +19,31 @@ def listar_usuarios():
     ---
     tags:
       - Usuários
-    description: Retorna a lista de usuários. Aceita filtros opcionais por query string.
+    description: Retorna todos os usuários cadastrados. Aceita filtros opcionais.
     parameters:
       - name: nome
         in: query
         type: string
         required: false
-        description: Filtrar por nome (LIKE)
       - name: endereco
         in: query
         type: string
         required: false
-        description: Filtrar por endereço (LIKE)
       - name: email
         in: query
         type: string
         required: false
-        description: Filtrar por email (LIKE)
       - name: telefone
         in: query
         type: string
         required: false
-        description: Filtrar por telefone (LIKE)
     responses:
       200:
         description: Lista de usuários retornada com sucesso
-        schema:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-              nome:
-                type: string
-              endereco:
-                type: string
-              email:
-                type: string
-              telefone:
-                type: string
     """
     filtros = {k: v for k, v in request.args.items()}
     usuarios = buscar_todos_usuarios(**filtros)
     return jsonify(usuarios), 200
-
 
 # -------------------------
 # CADASTRAR UM USUÁRIO
@@ -75,7 +55,7 @@ def cadastrar_usuario_endpoint():
     ---
     tags:
       - Usuários
-    description: Cadastra um novo usuário. O campo 'nome' é único.
+    description: Cadastra um novo usuário. Se o nome já existir, os campos serão preenchidos automaticamente com os dados existentes.
     consumes:
       - application/json
     parameters:
@@ -95,38 +75,35 @@ def cadastrar_usuario_endpoint():
               type: string
           required:
             - nome
-            - endereco
-            - email
-            - telefone
     responses:
       201:
         description: Usuário cadastrado com sucesso
-        schema:
-          type: object
-          properties:
-            id:
-              type: integer
-            nome:
-              type: string
-            endereco:
-              type: string
-            email:
-              type: string
-            telefone:
-              type: string
       400:
         description: Usuário já existe ou dados inválidos
     """
     dados = request.get_json()
-    if not dados or not all(k in dados for k in ('nome', 'endereco', 'email', 'telefone')):
-        return jsonify({'message': 'Todos os campos são obrigatórios!'}), 400
+    if not dados or 'nome' not in dados:
+        return jsonify({'message': 'Nome é obrigatório!'}), 400
 
-    novo_usuario = cadastrar_usuario(dados['nome'], dados['endereco'], dados['email'], dados['telefone'])
+    nome = dados['nome']
+    existente = buscar_usuario(nome)
+
+    if existente:
+        endereco = existente['endereco']
+        email = existente['email']
+        telefone = existente['telefone']
+    else:
+        if not all(k in dados for k in ('endereco', 'email', 'telefone')):
+            return jsonify({'message': 'Todos os campos são obrigatórios!'}), 400
+        endereco = dados['endereco']
+        email = dados['email']
+        telefone = dados['telefone']
+
+    novo_usuario = cadastrar_usuario(nome, endereco, email, telefone)
     if novo_usuario is None:
         return jsonify({'message': 'Usuário já cadastrado!'}), 400
 
     return jsonify(novo_usuario), 201
-
 
 # -------------------------
 # CONSULTAR POR NOME
@@ -144,23 +121,9 @@ def consultar_usuario(nome):
         in: path
         type: string
         required: true
-        description: Nome do usuário
     responses:
       200:
         description: Usuário encontrado
-        schema:
-          type: object
-          properties:
-            id:
-              type: integer
-            nome:
-              type: string
-            endereco:
-              type: string
-            email:
-              type: string
-            telefone:
-              type: string
       404:
         description: Usuário não encontrado
     """
@@ -168,7 +131,6 @@ def consultar_usuario(nome):
     if not usuario:
         return jsonify({'message': 'Usuário não encontrado'}), 404
     return jsonify(usuario), 200
-
 
 # -------------------------
 # EDITAR POR NOME
@@ -188,7 +150,6 @@ def editar_usuario_endpoint(nome):
         in: path
         type: string
         required: true
-        description: Nome do usuário a ser atualizado
       - in: body
         name: body
         required: true
@@ -208,8 +169,6 @@ def editar_usuario_endpoint(nome):
     responses:
       200:
         description: Usuário atualizado com sucesso
-        schema:
-          type: object
       400:
         description: Dados inválidos
       404:
@@ -225,7 +184,6 @@ def editar_usuario_endpoint(nome):
 
     atualizado = editar_usuario(nome, dados['endereco'], dados['email'], dados['telefone'])
     return jsonify(atualizado), 200
-
 
 # -------------------------
 # DELETAR POR NOME
@@ -243,7 +201,6 @@ def deletar_usuario_endpoint(nome):
         in: path
         type: string
         required: true
-        description: Nome do usuário a ser removido
     responses:
       200:
         description: Usuário deletado com sucesso
@@ -256,6 +213,12 @@ def deletar_usuario_endpoint(nome):
 
     deletar_usuario(nome)
     return jsonify({'message': 'Usuário deletado com sucesso!'}), 200
+
+
+
+
+
+
 
 
 
