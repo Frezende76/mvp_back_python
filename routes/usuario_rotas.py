@@ -106,16 +106,16 @@ def cadastrar_usuario_endpoint():
     return jsonify(novo_usuario), 201
 
 # -------------------------
-# CONSULTAR POR NOME
+# CONSULTAR POR NOME (ACEITA PARTE DO NOME)
 # -------------------------
 @usuario_rotas.route('/usuarios/consultar/<string:nome>', methods=['GET'])
 def consultar_usuario(nome):
     """
-    Consultar um usuário
+    Consultar usuário(s) pelo nome
     ---
     tags:
       - Usuários
-    description: Retorna os dados de um usuário pelo nome.
+    description: Retorna os dados de um ou mais usuários que contenham o nome informado (busca parcial).
     parameters:
       - name: nome
         in: path
@@ -123,14 +123,14 @@ def consultar_usuario(nome):
         required: true
     responses:
       200:
-        description: Usuário encontrado
+        description: Usuário(s) encontrado(s)
       404:
         description: Usuário não encontrado
     """
-    usuario = buscar_usuario(nome)
-    if not usuario:
+    usuarios = buscar_todos_usuarios(nome=nome)  # Alteração: buscar por parte do nome
+    if not usuarios:
         return jsonify({'message': 'Usuário não encontrado'}), 404
-    return jsonify(usuario), 200
+    return jsonify(usuarios), 200
 
 # -------------------------
 # EDITAR POR NOME
@@ -213,6 +213,7 @@ def deletar_usuario_endpoint(nome):
 
     deletar_usuario(nome)
     return jsonify({'message': 'Usuário deletado com sucesso!'}), 200
+
 
 
 
