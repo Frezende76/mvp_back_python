@@ -42,7 +42,7 @@ swagger = Swagger(app, template=swagger_template, config=swagger_config)
 app.register_blueprint(usuario_rotas)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
 
 
 
