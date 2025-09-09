@@ -12,7 +12,7 @@ usuario_rotas = Blueprint('usuarios', __name__)
 # -------------------------
 # LISTAR TODOS OS USUÁRIOS
 # -------------------------
-@usuario_rotas.route('/usuarios', methods=['GET'])
+@usuario_rotas.route('/usuarios/todos', methods=['GET'])
 def listar_usuarios():
     """
     Listar todos os usuários
@@ -48,7 +48,7 @@ def listar_usuarios():
 # -------------------------
 # CADASTRAR UM USUÁRIO
 # -------------------------
-@usuario_rotas.route('/usuarios', methods=['POST'])
+@usuario_rotas.route('/usuarios/cadastrar', methods=['POST'])
 def cadastrar_usuario_endpoint():
     """
     Cadastrar um usuário
@@ -108,7 +108,7 @@ def cadastrar_usuario_endpoint():
 # -------------------------
 # CONSULTAR POR NOME
 # -------------------------
-@usuario_rotas.route('/usuarios/<string:nome>', methods=['GET'])
+@usuario_rotas.route('/usuarios/consultar/<string:nome>', methods=['GET'])
 def consultar_usuario(nome):
     """
     Consultar um usuário
@@ -135,7 +135,7 @@ def consultar_usuario(nome):
 # -------------------------
 # EDITAR POR NOME
 # -------------------------
-@usuario_rotas.route('/usuarios/<string:nome>', methods=['PUT'])
+@usuario_rotas.route('/usuarios/editar/<string:nome>', methods=['PUT'])
 def editar_usuario_endpoint(nome):
     """
     Editar um usuário
@@ -188,7 +188,7 @@ def editar_usuario_endpoint(nome):
 # -------------------------
 # DELETAR POR NOME
 # -------------------------
-@usuario_rotas.route('/usuarios/<string:nome>', methods=['DELETE'])
+@usuario_rotas.route('/usuarios/deletar/<string:nome>', methods=['DELETE'])
 def deletar_usuario_endpoint(nome):
     """
     Deletar um usuário

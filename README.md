@@ -86,14 +86,14 @@ O servidor estará rodando em:
 
 ## 📌 6. Endpoints da API
 
-| Método | Endpoint                   | Descrição                      |
-|--------|----------------------------|--------------------------------|
-| POST   | `/usuarios/cadastrar`      | Cadastrar um novo usuário      |
-| PUT    | `/usuarios/editar/<id>`    | Editar um usuário por ID       |
-| GET    | `/usuarios/consultar/<id>` | Consultar um usuário por ID    |
-| DELETE | `/usuarios/deletar/<id>`   | Excluir um usuário por ID      |
-| GET    | `/usuarios/todos`          | Listar todos os usuários       |
-| POST   | `/usuarios/verificar`      | Verificar usuários existentes  |
+| Método | Endpoint                     | Descrição                      |
+|--------|------------------------------|--------------------------------|
+| GET    | `/usuarios/todos`            | Listar todos os usuários       |
+| POST   | `/usuarios/cadastrar`        | Cadastrar um novo usuário      |
+| PUT    | `/usuarios/editar/{nome}`    | Editar um usuário pelo nome    |
+| GET    | `/usuarios/consultar/{nome}` | Consultar um usuário pelo nome |
+| DELETE | `/usuarios/excluir/{nome}`   | Excluir um usuário pelo nome   |
+
 
 ---
 
@@ -111,7 +111,7 @@ O servidor estará rodando em:
 Para testar a listagem, basta acessar no navegador:
 
 ```bash
-http://127.0.0.1:5000/usuarios/
+http://127.0.0.1:5000/usuarios
 ```
 
 ---
