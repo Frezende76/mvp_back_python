@@ -3,7 +3,7 @@ version: "3.9"
 services:
   backend:
     build: .
-    container_name: mvp_backend
+    container_name: mvp_back_python
     ports:
       - "5000:5000"
     volumes:
