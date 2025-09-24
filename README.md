@@ -128,14 +128,21 @@ docker-compose up --build
 
 ```
 
-### 2. Caso necessite parar o container
+### 2. Se não mudou nada no Dockerfile e a imagem já existe, basta:
+
+```bash
+docker-compose up
+
+```
+
+### 3. Depois que terminar de usar, rode:
 
 ```bash
 docker-compose down
 
 ```
 
-### 3. Acessar a API
+### 4. Acessar a API
 
 👉 API: http://localhost:5000
 
