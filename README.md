@@ -100,7 +100,10 @@ A documentação Swagger estará em:
 
 ---
 
-## 🐳 4. Rodando com Docker
+## 🐳 4. Rodando com Docker (opcional)
+
+> ⚠️ Recomendamos usar **Docker Compose** (ver seção 5).  
+> Os comandos abaixo são apenas se você quiser rodar manualmente com Docker.
 
 ### 1. Buildar imagem
 
@@ -116,21 +119,28 @@ docker run -d -p 5000:5000 --name mvp_back_python_container mvp_back_python
 
 ```
 
-### 3. Acessar API
-
-👉 API: http://localhost:5000
-
-👉Swagger UI: http://localhost:5000/swagger/
-
-
 ## 🧩 5. Usando Docker Compose
 
-### 1. Com o docker-compose.yml já configurado:
+### 1. Subir o backend com Compose
 
 ```bash
 docker-compose up --build
 
 ```
+
+### 2. Caso necessite parar o container
+
+```bash
+docker-compose down
+
+```
+
+### 3. Acessar a API
+
+👉 API: http://localhost:5000
+
+👉Swagger UI: http://localhost:5000/swagger/
+
 
 ### OBS: Isso iniciará o backend na porta 5000 com acesso ao Swagger.
 
